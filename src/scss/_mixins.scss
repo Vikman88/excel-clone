@@ -1,0 +1,32 @@
+// список миксинов
+@mixin button($color: green) {
+  height: 24px;
+  min-width: 3px;
+  padding: 3px;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.7);
+
+  // обращение к точному наследнику
+  & i {
+    font-size: 18px;
+  }
+
+  &:active, // псевдоселектор который объединяется с классом active
+  &.active {
+    color: $color;
+  }
+
+  &:hover {
+    //срабатывает при наведении на кнопку
+    background: #eee;
+    cursor: pointer;
+  }
+}
+
+@mixin clear-list() {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
