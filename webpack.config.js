@@ -3,7 +3,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
-const loader = require('sass-loader');
 
 const getPath = (fileName) => path.resolve(__dirname, fileName);
 const isProd = process.env.NODE_ENV === 'production';
@@ -15,6 +14,7 @@ const jsLoader = () => {
       loader: 'babel-loader',
       options: {
         presets: ['@babel/preset-env'],
+        plugins: ['@babel/plugin-proposal-class-properties'],
       },
     },
   ];
@@ -38,7 +38,7 @@ module.exports = {
     port: 3000,
     hot: isDev,
   },
-  devtool: isDev ? 'source-map' : false,
+  devtool: isDev ? 'eval-source-map' : false,
   resolve: {
     extensions: ['.js'],
     alias: {
