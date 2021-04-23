@@ -8,14 +8,21 @@ const createCell = () => {
 };
 
 const createRow = (content, num = '') => {
+  const resize =
+    num !== '' ? '<div class="row-resize" data-resize="row"></div>' : '';
   return `<div class="row">
-  <div class="row-info">${num}</div>
+  <div class="row-info">${num}
+  ${resize}
+  </div>
   <div class="row-data">${content}</div>
 </div>`;
 };
 
 const toColumn = (col) => {
-  return `<div class="column">${col}</div>`;
+  return `<div class="column">
+  ${col}
+  <div class="col-resize" data-resize="col"></div>
+  </div>`;
 };
 
 const toChar = (_, i) => String.fromCharCode(CODES.A + i);
