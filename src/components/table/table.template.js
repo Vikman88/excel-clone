@@ -3,19 +3,26 @@ const CODES = {
   Z: 90,
 };
 
-const createCell = () => {
-  return `<div class="cell" contenteditable=""></div>`;
+const createCell = (_, col) => {
+  return `<div class="cell" contenteditable="" data-col="${col}"></div>`;
 };
 
 const createRow = (content, num = '') => {
-  return `<div class="row">
-  <div class="row-info">${num}</div>
+  const resize =
+    num !== '' ? '<div class="row-resize" data-resize="row"></div>' : '';
+  return `<div class="row" data-type="resizable">
+  <div class="row-info">${num}
+  ${resize}
+  </div>
   <div class="row-data">${content}</div>
 </div>`;
 };
 
-const toColumn = (col) => {
-  return `<div class="column">${col}</div>`;
+const toColumn = (col, index) => {
+  return `<div class="column" data-type="resizable" data-col="${index}">
+  ${col}
+  <div class="col-resize" data-resize="col"></div>
+  </div>`;
 };
 
 const toChar = (_, i) => String.fromCharCode(CODES.A + i);
@@ -38,10 +45,6 @@ export const createTable = (rowsCount = 32) => {
     return iter(++i);
   };
   iter(0);
-  /* for (let i = 0; i < rowsCount; i++) {
-    const indexRow = i + 1;
-    rows.push(createRow(cells, indexRow));
-  } */
 
   return rows.join('');
 };

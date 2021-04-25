@@ -40,6 +40,26 @@ class Dom {
     }
     return this;
   }
+
+  closest(target) {
+    return $(this.$el.closest(target));
+  }
+
+  getCoords() {
+    return this.$el.getBoundingClientRect();
+  }
+
+  get data() {
+    return this.$el.dataset;
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector);
+  }
+
+  css(styles = {}) {
+    Object.assign(this.$el.style, styles);
+  }
 }
 
 export function $(selector) {
