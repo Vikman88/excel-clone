@@ -29,6 +29,18 @@ class Dom {
     this.$el.removeEventListener(eventType, callback);
   }
 
+  find(selector) {
+    return $(this.$el.querySelector(selector));
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className);
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className);
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$el;
@@ -50,7 +62,8 @@ class Dom {
   }
 
   get data() {
-    return this.$el.dataset;
+    if (this.$el.dataset) return this.$el.dataset;
+    return this.$el.target.dataset;
   }
 
   findAll(selector) {
@@ -59,6 +72,29 @@ class Dom {
 
   css(styles = {}) {
     Object.assign(this.$el.style, styles);
+  }
+
+  id() {
+    const toNum = (num) => Number.parseInt(num, 10);
+    return this.data.id.split(':').map(toNum);
+  }
+
+  focus() {
+    this.$el.focus();
+    return this;
+  }
+
+  blur() {
+    this.$el.blur();
+    return this;
+  }
+
+  text(text) {
+    if (typeof text === 'string') {
+      this.$el.textContent = text;
+      return this;
+    }
+    return this.$el.textContent;
   }
 }
 
