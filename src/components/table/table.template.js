@@ -3,8 +3,8 @@ const CODES = {
   Z: 90,
 };
 
-const createCell = (_, col) => {
-  return `<div class="cell" contenteditable="" data-col="${col}"></div>`;
+const createCell = (row) => (_, col) => {
+  return `<div class="cell" contenteditable="" data-col="${col}" data-id="${col}:${row}" data-type="cell"></div>`;
 };
 
 const createRow = (content, num = '') => {
@@ -31,16 +31,13 @@ export const createTable = (rowsCount = 32) => {
   const colsCount = CODES.Z - CODES.A + 1;
   const rows = [];
   const cols = new Array(colsCount).fill('').map(toChar).map(toColumn).join('');
-  const cells = new Array(colsCount)
-    .fill('')
-    .map(toChar)
-    .map(createCell)
-    .join('');
+
   rows.push(createRow(cols));
 
   const iter = (i) => {
     if (i >= rowsCount) return rows;
     const indexRow = i + 1;
+    const cells = new Array(colsCount).fill('').map(createCell(i)).join('');
     rows.push(createRow(cells, indexRow));
     return iter(++i);
   };
