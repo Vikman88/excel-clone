@@ -27,18 +27,22 @@ export class Table extends ExcelComponent {
     super.init();
     const $cell = this.$root.find('[data-id="0:0"]');
     this.selection.select($cell);
+    this.selectCell();
     $cell.focus();
-    this.$on('Formula: onInput', (text, focus) => {
-      if (focus === 'insertParagraph') {
-        this.selection.current.focus();
-      }
+    this.$on('Formula: onInput', (text) => {
       this.selection.current.text(text);
+    });
+    this.$on('formula:done', () => {
+      this.selection.current.focus();
     });
   }
 
+  selectCell() {
+    this.$emit('table:select', this.selection.current);
+  }
+
   onInput(event) {
-    this.$emit('dsds', this.selection.current.text());
-    console.log(this.selection.current.text());
+    this.$emit('table:input', this.selection.current);
   }
 
   onMousedown(event) {
@@ -58,12 +62,11 @@ export class Table extends ExcelComponent {
         this.selection.unselectAll();
         this.selection.select($cell);
       }
-      this.$emit('dsds', this.selection.current.text());
+      this.selectCell();
     }
   }
 
   onKeydown(event) {
-    //console.log(event.key);
     const keys = [
       'ArrowRight',
       'ArrowLeft',
@@ -75,13 +78,7 @@ export class Table extends ExcelComponent {
     if (keys.includes(event.key) && !event.shiftKey) {
       event.preventDefault();
       this.selection.moveFocus(this.$root, event);
-      this.$emit('dsds', this.selection.current.text());
-    } /* else {
-      this.selection.moveFocusToCoords(this.$root, event);
-    } */
+      this.selectCell();
+    }
   }
-  /* onKeyup(event) {
-    console.log(event);
-  } */
-  //log
 }

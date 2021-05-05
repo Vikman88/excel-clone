@@ -1,4 +1,5 @@
 import { ExcelComponent } from '@core/ExcelComponent';
+import { $ } from '../../core/dom';
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula';
@@ -6,31 +7,35 @@ export class Formula extends ExcelComponent {
   constructor($root, options) {
     super($root, {
       name: 'Formula',
-      listeners: ['input'],
+      listeners: ['input', 'keydown'],
       ...options,
     });
   }
 
   init() {
     super.init();
-    this.$on('dsds', (text) => {
-      console.log(text);
-      const $input = this.$root.find('[class="input"]');
-      $input.text(text);
+    this.$formula = this.$root.find('#formula');
+    this.$on('table:select', (current) => {
+      this.$formula.text(current.text());
+    });
+    this.$on('table:input', (current) => {
+      this.$formula.text(current.text());
     });
   }
 
   toHTML() {
-    return `<div class="info">fx</div><div class="input" contenteditable="" spellcheck="false"></div>`;
+    return `<div class="info">fx</div><div id="formula" class="input" contenteditable="" spellcheck="false"></div>`;
   }
 
   onInput(event) {
-    const $input = this.$root.find('[class="input"]');
-    if (event.inputType === 'insertParagraph') {
+    this.$emit('Formula: onInput', $(event.target).text());
+  }
+
+  onKeydown(event) {
+    const keys = ['Enter', 'Tab'];
+    if (keys.includes(event.key)) {
       event.preventDefault();
-      $input.blur();
+      this.$emit('formula:done');
     }
-    const text = event.target.textContent.trim();
-    this.$emit('Formula: onInput', text, event.inputType);
   }
 }
