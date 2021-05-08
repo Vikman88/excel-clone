@@ -2,6 +2,7 @@ import { ExcelComponent } from '@core/ExcelComponent';
 import { createTable } from './table.template';
 import resizeFn from './table.function.js';
 import { TableSelection } from './TableSelection';
+import * as actions from '@/redux/actions';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -16,7 +17,12 @@ export class Table extends ExcelComponent {
   }
 
   toHTML() {
-    return createTable();
+    const state = this.$getState();
+    const types = Object.keys(state);
+    if (types.includes('colState')) {
+      const coords = state['colState'];
+      return createTable(coords);
+    }
   }
 
   prepare() {
@@ -35,22 +41,34 @@ export class Table extends ExcelComponent {
     this.$on('formula:done', () => {
       this.selection.current.focus();
     });
+    this.$subscribe((state) => {
+      console.log('TableState', state);
+    });
   }
 
   selectCell() {
     this.$emit('table:select', this.selection.current);
+    this.$dispatch({ type: 'TEST' });
   }
 
   onInput(event) {
     this.$emit('table:input', this.selection.current);
   }
 
+  async resizeTable(event, resize) {
+    try {
+      const data = await resizeFn.call(this, event, resize);
+      this.$dispatch(actions.tableResize(data));
+    } catch (e) {
+      console.warn(e.message);
+    }
+  }
+
   onMousedown(event) {
-    console.log(event);
     const { resize } = event.target.dataset;
     const { type } = event.target.dataset;
     if (resize) {
-      resizeFn.bind(this, event, resize)();
+      this.resizeTable(event, resize);
     } else if (type === 'cell') {
       const { id } = event.target.dataset;
       const $cell = this.$root.find(`[data-id="${id}"]`);
