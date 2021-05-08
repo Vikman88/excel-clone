@@ -20,12 +20,10 @@ class Dom {
   }
 
   on(eventType, callback) {
-    console.log(eventType, callback);
     this.$el.addEventListener(eventType, callback);
   }
 
   off(eventType, callback) {
-    console.log(eventType, callback);
     this.$el.removeEventListener(eventType, callback);
   }
 
