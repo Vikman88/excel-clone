@@ -33,6 +33,10 @@ export class TableSelection {
     });
   }
 
+  get selectedIds() {
+    return this.group.map(($el) => $el.id());
+  }
+
   moveFocus($root, event) {
     const $el = this.group.shift();
     const coords = $el.id();
@@ -46,6 +50,12 @@ export class TableSelection {
     $focusedEl.focus().addClass(TableSelection.className);
   }
 
+  applyStyle(style) {
+    console.log(this.group);
+    this.group.forEach(($el) => {
+      $el.css(style);
+    });
+  }
   /* moveFocusToCoords($root, event) {
     console.log(this.group);
     const $el = this.group.shift();

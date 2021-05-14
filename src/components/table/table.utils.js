@@ -44,3 +44,10 @@ export const updateCoords = ([x, y], key) => {
   }
   return `[data-id="${x}:${y}"]`;
 };
+
+export const getCoords = (objCoords, index) => {
+  const ids = Object.keys(objCoords);
+  if (ids.includes(index.toString())) {
+    return objCoords[index];
+  }
+};
