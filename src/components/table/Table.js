@@ -3,6 +3,9 @@ import { createTable } from './table.template';
 import resizeFn from './table.function.js';
 import { TableSelection } from './TableSelection';
 import * as actions from '@/redux/actions';
+import { defaultStyles } from '@/constants';
+import { parse } from '@core/parse';
+import { $ } from '@core/dom';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -18,41 +21,72 @@ export class Table extends ExcelComponent {
 
   toHTML() {
     const state = this.$getState();
-    const types = Object.keys(state);
-    if (types.includes('colState')) {
-      const coords = state['colState'];
-      return createTable(coords);
-    }
+    return createTable(state);
   }
 
   prepare() {
     this.selection = new TableSelection();
   }
 
+  fillCell() {
+    const state = this.$getState();
+    const dataId = state.dataState;
+    const ids = Object.keys(dataId);
+    ids.forEach((id) => {
+      const [x, y] = id.split(',');
+      const $cell = this.$root.find(`[data-id="${x}:${y}"]`);
+      const text = parse(dataId[id]);
+      $cell.text(text);
+    });
+  }
+
   init() {
     super.init();
+    this.fillCell();
     const $cell = this.$root.find('[data-id="0:0"]');
     this.selection.select($cell);
     this.selectCell();
     $cell.focus();
     this.$on('Formula: onInput', (text) => {
-      this.selection.current.text(text);
+      this.selection.current.attr('data-value', text).text(parse(text));
+      this.updateTextInStore(text);
     });
     this.$on('formula:done', () => {
       this.selection.current.focus();
     });
-    this.$subscribe((state) => {
-      console.log('TableState', state);
+
+    this.$on('toolbar:appStyle', (value) => {
+      this.selection.applyStyle(value);
+      this.$dispatch(
+        actions.applyStyle({ value, ids: this.selection.selectedIds })
+      );
     });
+    /* this.$subscribe((state) => {
+      console.log('TableState', state);
+    }); */
   }
 
   selectCell() {
     this.$emit('table:select', this.selection.current);
-    this.$dispatch({ type: 'TEST' });
+    const styles = this.selection.current.getStyles(Object.keys(defaultStyles));
+    this.$dispatch(actions.changeStyles(styles));
+    /* this.$dispatch({ type: 'TEST' }); */
+  }
+
+  updateTextInStore(text) {
+    this.$dispatch(
+      actions.changeText({
+        id: this.selection.current.id(),
+        value: text,
+      })
+    );
   }
 
   onInput(event) {
-    this.$emit('table:input', this.selection.current);
+    //this.$emit('table:input', this.selection.current);
+    const text = $(event.target).text();
+    this.updateTextInStore(text);
+    this.selection.current.attr('data-value', text);
   }
 
   async resizeTable(event, resize) {

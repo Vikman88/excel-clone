@@ -32,16 +32,20 @@ export default function (event, resize) {
     document.onmouseup = () => {
       document.onmousemove = null;
       document.onmouseup = null;
+      let values;
+      const id = $parent.data.row || $parent.data.col;
       if (resize === 'col') {
+        values = { width: value };
         $parent.css({ width: value + 'px' });
         findedEl.forEach((el) => $(el).css({ width: value + 'px' }));
       } else {
+        values = { height: value };
         $parent.css({ height: value + 'px' });
       }
 
       resolve({
-        value,
-        id: resize === 'col' ? idElement : null,
+        values,
+        id,
       });
 
       $target.css({

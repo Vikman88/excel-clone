@@ -19,6 +19,14 @@ class Dom {
     return this;
   }
 
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value);
+      return this;
+    }
+    return this.$el.getAttribute(name);
+  }
+
   on(eventType, callback) {
     this.$el.addEventListener(eventType, callback);
   }
@@ -38,6 +46,11 @@ class Dom {
 
   removeClass(className) {
     this.$el.classList.remove(className);
+    return this;
+  }
+
+  toggleClass(className) {
+    this.$el.classList.toggle(className);
     return this;
   }
 
@@ -74,6 +87,13 @@ class Dom {
     Object.assign(this.$el.style, styles);
   }
 
+  getStyles(styles = []) {
+    return styles.reduce((acc, stl) => {
+      acc[stl] = this.$el.style[stl];
+      return acc;
+    }, {});
+  }
+
   id() {
     const toNum = (num) => Number.parseInt(num, 10);
     return this.data.id.split(':').map(toNum);
@@ -90,7 +110,7 @@ class Dom {
   }
 
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text;
       return this;
     }
