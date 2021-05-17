@@ -14,6 +14,11 @@ class Dom {
     return this.$el.outerHTML.trim();
   }
 
+  clearHTML() {
+    this.html('');
+    return this;
+  }
+
   clear() {
     this.html('');
     return this;

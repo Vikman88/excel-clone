@@ -5,6 +5,13 @@
     "browser": true,
     "node": true
   },
-  "rules": {},
+  "rules": {
+    "require-jsdoc": 0,
+    "object-curly-spacing": 0,
+    "indent": 0,
+    "operator-linebreak": 0,
+    "max-len": 0,
+    "no-invalid-this": 0
+  },
   "extends": ["eslint:recommended", "google"]
 }

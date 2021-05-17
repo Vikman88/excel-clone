@@ -4,7 +4,7 @@ import resizeFn from './table.function.js';
 import { TableSelection } from './TableSelection';
 import * as actions from '@/redux/actions';
 import { defaultStyles } from '@/constants';
-import { parse } from '@core/parse';
+import parse from '@core/parse';
 import { $ } from '@core/dom';
 
 export class Table extends ExcelComponent {
@@ -61,16 +61,12 @@ export class Table extends ExcelComponent {
         actions.applyStyle({ value, ids: this.selection.selectedIds })
       );
     });
-    /* this.$subscribe((state) => {
-      console.log('TableState', state);
-    }); */
   }
 
   selectCell() {
     this.$emit('table:select', this.selection.current);
     const styles = this.selection.current.getStyles(Object.keys(defaultStyles));
     this.$dispatch(actions.changeStyles(styles));
-    /* this.$dispatch({ type: 'TEST' }); */
   }
 
   updateTextInStore(text) {
@@ -83,7 +79,6 @@ export class Table extends ExcelComponent {
   }
 
   onInput(event) {
-    //this.$emit('table:input', this.selection.current);
     const text = $(event.target).text();
     this.updateTextInStore(text);
     this.selection.current.attr('data-value', text);

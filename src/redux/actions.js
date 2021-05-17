@@ -4,7 +4,14 @@ import {
   TABLE_RESIZE,
   APPLY_STYLE,
   NAME_TABLE,
+  UPDATE_DATE,
 } from './types';
+
+export function updateDate() {
+  return {
+    type: UPDATE_DATE,
+  };
+}
 
 export function tableResize(data) {
   return {

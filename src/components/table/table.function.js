@@ -1,6 +1,6 @@
 import { $ } from '@core/dom.js';
 
-export default function (event, resize) {
+export default function(event, resize) {
   return new Promise((resolve) => {
     const $target = $(event.target);
     const $parent = $target.closest('[data-type="resizable"]');

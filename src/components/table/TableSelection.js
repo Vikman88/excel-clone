@@ -23,7 +23,6 @@ export class TableSelection {
     const firstEl = this.current;
     this.unselectAll();
     const coordsCollection = makeCoords(firstEl, $el);
-    console.log(this);
     const $els = coordsCollection.map((coords) =>
       $root.find(`[data-id="${coords.join(':')}"]`)
     );
@@ -41,7 +40,6 @@ export class TableSelection {
     const $el = this.group.shift();
     const coords = $el.id();
     const newCoords = updateCoords(coords, event.key);
-    console.log(newCoords);
     const $focusedEl = $root.find(newCoords);
     this.current = $focusedEl;
     $el.removeClass(TableSelection.className);
@@ -51,30 +49,8 @@ export class TableSelection {
   }
 
   applyStyle(style) {
-    console.log(this.group);
     this.group.forEach(($el) => {
       $el.css(style);
     });
   }
-  /* moveFocusToCoords($root, event) {
-    console.log(this.group);
-    const $el = this.group.shift();
-    this.unselectAll();
-    const coords = $el.id();
-    //console.log($el, coords);
-    const newCoords = updateCoords(coords, event.key);
-    //console.log(newCoords);
-    const $focusedEl = $root.find(newCoords);
-    //console.log($focusedEl);
-    const coordsCollection = makeCoords($el, $focusedEl);
-    //console.log(coordsCollection);
-    const $els = coordsCollection.map((coords1) =>
-      $root.find(`[data-id="${coords1.join(':')}"]`)
-    );
-    //console.log($els);
-    this.group.push($el, ...$els);
-    this.group.forEach(($el) => {
-      $el.addClass(TableSelection.className);
-    });
-  } */
 }
