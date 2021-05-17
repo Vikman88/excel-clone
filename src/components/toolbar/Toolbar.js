@@ -33,23 +33,9 @@ export class Toolbar extends ExcelStateComponent {
 
   onClick(event) {
     const $target = $(event.target);
-    /*     if ($target.data.type.includes('button')) {
-      $target.closest('.button').toggleClass('active');
-      if ($target.data.value.includes('textAlign')) {
-        const alignButton = this.$root.findAll('[data-type="button align"]');
-        alignButton.forEach((el) => {
-          const $el = $(el);
-          $el.removeClass('active');
-        });
-        $target.closest('.button').toggleClass('active');
-      }
-    } */
     if ($target.data.type === 'button') {
       const value = JSON.parse($target.data.value);
       this.$emit('toolbar:appStyle', value);
-
-      /* const key = Object.keys(value)[0];
-      this.setState({ [key]: value[key] }); */
     }
   }
 }

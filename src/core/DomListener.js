@@ -12,10 +12,11 @@ export class DomListener {
   initDomListeners() {
     this.listeners.forEach((listener) => {
       const method = getMethodName(listener);
-      if (!this[method])
+      if (!this[method]) {
         throw new Error(
           `Method ${method} is not implemented in ${this.name || ''} Component`
         );
+      }
       this[method] = this[method].bind(this);
       this.$root.on(listener, this[method]);
     });

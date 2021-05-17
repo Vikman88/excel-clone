@@ -31,7 +31,7 @@ export function toInlineStyles(styles = {}) {
 
 export function debounce(fn, wait) {
   let timeout;
-  return function (...args) {
+  return function(...args) {
     const later = () => {
       clearTimeout(timeout);
       fn.apply(this, args);

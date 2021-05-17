@@ -1,5 +1,5 @@
 import { ExcelComponent } from '@core/ExcelComponent';
-import { $ } from '../../core/dom';
+import { $ } from '@core/dom';
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula';
@@ -19,12 +19,6 @@ export class Formula extends ExcelComponent {
     this.$on('table:select', (current) => {
       this.$formula.text(current.data.value);
     });
-    /* this.$on('table:input', (current) => {
-      this.$formula.text(current.text());
-    }); */
-    /* this.$subscribe((state) => {
-      this.$formula.text(state.currentText);
-    }); */
   }
 
   toHTML() {
