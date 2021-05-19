@@ -1,3 +1,6 @@
+install:
+	npm ci
+
 start:
 	npm run start
 
@@ -12,3 +15,6 @@ test:
 
 test-watch:
 	npm run test:watch
+
+lint:
+	npx eslint .
